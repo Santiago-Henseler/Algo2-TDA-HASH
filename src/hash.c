@@ -121,24 +121,29 @@ void hash_destruir_todo(hash_t *hash, void (*destructor)(void *))
 	if (!hash)
 		return;
 
+/*
 	for(int i = 0; i < hash->capacidad; i++){
 		struct par* actual = hash->tabla[i];
 		destruir_recu(actual, destructor);
 	}
-	free(hash);
+	free(hash);*/
 }
 
 size_t hash_con_cada_clave(hash_t *hash, bool (*f)(const char *clave, void *valor, void *aux), void *aux)
 {
-	size_t n = 0;
 	if (!hash || !f)
-		return n;
+		return 0;
+	
+	size_t n = 0;
 
-	for(int i = 0; i < hash->capacidad; i++){
+	bool seguir = true;
+
+	for(int i = 0; i < hash->capacidad && seguir; i++){
 		struct par* actual = hash->tabla[i];
-		while (actual && f(actual->clave, actual->valor,aux))
+		while (actual && seguir)
 		{
 			n++;
+			seguir = f(actual->clave, actual->valor,aux);
 			actual = actual->siguiente;
 		}
 	}

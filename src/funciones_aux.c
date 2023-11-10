@@ -39,7 +39,7 @@ hash_t * insertar_par(hash_t *hash,struct par* par, void **anterior){
 	{
 		if(strcmp(par->clave, actual->clave) == 0){
             if(anterior)
-			    *anterior = par->valor;
+			    *anterior = actual->valor;
 			actual->valor = par->valor;
 			free(par->clave);
 			free(par);
