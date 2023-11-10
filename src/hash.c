@@ -1,20 +1,6 @@
 #include "funciones_aux.h"
 #include "hash.h"
 
-#include "stdio.h"
-
-void mostrar(hash_t *hash){
-	for(int i = 0; i < hash->capacidad; i++){
-		struct par* actual = hash->tabla[i];
-		while (actual)
-		{
-			printf("(%s, %i)", actual->clave, *(int*)actual->valor);
-			actual = actual->siguiente;
-		}
-		printf("\n");
-	}
-}
-
 hash_t *hash_crear(size_t capacidad)
 {
 	size_t max = capacidad < 3 ? 3:capacidad;
@@ -65,7 +51,7 @@ void *hash_quitar(hash_t *hash, const char *clave)
 
 	void * elemento = NULL;
 
-	actual = quitar_recu(actual, clave, &elemento);
+	hash->tabla[posicion] = quitar_recu(actual, clave, &elemento);
 
 	if(elemento){
 		hash->cantidad--;
@@ -119,6 +105,17 @@ void hash_destruir(hash_t *hash)
 	hash_destruir_todo(hash, NULL);
 }
 
+void destruir_recu(struct par *actual, void(*f)(void*)){
+	
+	if(actual)
+		destruir_recu(actual->siguiente, f);
+
+	if(f)
+		f(actual->valor);
+	free(actual->clave);
+	free(actual);
+}
+
 void hash_destruir_todo(hash_t *hash, void (*destructor)(void *))
 {
 	if (!hash)
@@ -126,12 +123,7 @@ void hash_destruir_todo(hash_t *hash, void (*destructor)(void *))
 
 	for(int i = 0; i < hash->capacidad; i++){
 		struct par* actual = hash->tabla[i];
-		while (actual)
-		{
-			
-			actual = actual->siguiente;
-		}
-		free(actual);
+		destruir_recu(actual, destructor);
 	}
 	free(hash);
 }
@@ -142,13 +134,10 @@ size_t hash_con_cada_clave(hash_t *hash, bool (*f)(const char *clave, void *valo
 	if (!hash || !f)
 		return n;
 
-	bool finalizar = false;
-
-	for(int i = 0; i < hash->capacidad && !finalizar; i++){
+	for(int i = 0; i < hash->capacidad; i++){
 		struct par* actual = hash->tabla[i];
-		while (actual)
+		while (actual && f(actual->clave, actual->valor,aux))
 		{
-			finalizar = f(actual->clave, actual->valor,aux);
 			n++;
 			actual = actual->siguiente;
 		}
