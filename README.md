@@ -4,40 +4,38 @@
 
 # TDA HASH
 
-## Repositorio de (Nombre Apellido) - (Padrón) - (Mail)
+## Repositorio de Santiago Henseler - 110732 - shenseler@fi.uba.com
 
 - Para compilar:
 
 ```bash
-línea de compilación
+make prueba_alumno
 ```
 
 - Para ejecutar:
 
 ```bash
-línea de ejecución
+./prueba_alumno
 ```
 
 - Para ejecutar con valgrind:
 ```bash
-línea con valgrind
+make valgrind_alumno
 ```
 ---
-##  Funcionamiento
+##  ¿Que es un diccionario?
 
-Explicación de cómo funcionan las estructuras desarrolladas en el TP y el funcionamiento general del mismo.
+Un diccionario es un T.D.A. el cual permite almacenar y organizar información en pares clave-valor. Cada elemento en un diccionario consiste en una clave única y un valor asociado. La clave funciona como un identificador único y se utiliza para acceder al valor correspondiente de una manera más eficaz.
 
-Aclarar en esta parte todas las decisiones que se tomaron al realizar el TP, cosas que no se aclaren en el enunciado, fragmentos de código que necesiten explicación extra, etc.
-
-Incluír **EN TODOS LOS TPS** los diagramas relevantes al problema (mayormente diagramas de memoria para explicar las estructuras, pero se pueden utilizar otros diagramas si es necesario).
-
-### Por ejemplo:
-
-El programa funciona abriendo el archivo pasado como parámetro y leyendolo línea por línea. Por cada línea crea un registro e intenta agregarlo al vector. La función de lectura intenta leer todo el archivo o hasta encontrar el primer error. Devuelve un vector con todos los registros creados.
+Las ventajas de este T.D.A. salen a la luz en las operaciónes de buscar, insertar y modificar rápidamente datos. En general, puede variar con la implementación, las operaciones eficientes son `O(1)`.
 
 <div align="center">
-<img width="70%" src="img/diagrama1.svg">
+<img width="70%" src="img/diccionario.png">
 </div>
+
+---
+##  ¿Que es un diccionario?
+
 
 En el archivo `sarasa.c` la función `funcion1` utiliza `realloc` para agrandar la zona de memoria utilizada para conquistar el mundo. El resultado de `realloc` lo guardo en una variable auxiliar para no perder el puntero original en caso de error:
 
