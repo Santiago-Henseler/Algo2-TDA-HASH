@@ -4,57 +4,62 @@
 
 # TDA HASH
 
-## Repositorio de (Nombre Apellido) - (Padrón) - (Mail)
+## Repositorio de Santiago Henseler - 110732 - shenseler@fi.uba.com
 
 - Para compilar:
 
 ```bash
-línea de compilación
+make prueba_alumno
 ```
 
 - Para ejecutar:
 
 ```bash
-línea de ejecución
+./prueba_alumno
 ```
 
 - Para ejecutar con valgrind:
 ```bash
-línea con valgrind
+make valgrind_alumno
 ```
 ---
-##  Funcionamiento
+##  ¿Que es un diccionario?
 
-Explicación de cómo funcionan las estructuras desarrolladas en el TP y el funcionamiento general del mismo.
+Un diccionario es un T.D.A. el cual permite almacenar y organizar información en pares clave-valor. Cada elemento en un diccionario consiste en una clave única y un valor asociado. La clave funciona como un identificador único y se utiliza para acceder al valor correspondiente de una manera más eficaz.
 
-Aclarar en esta parte todas las decisiones que se tomaron al realizar el TP, cosas que no se aclaren en el enunciado, fragmentos de código que necesiten explicación extra, etc.
-
-Incluír **EN TODOS LOS TPS** los diagramas relevantes al problema (mayormente diagramas de memoria para explicar las estructuras, pero se pueden utilizar otros diagramas si es necesario).
-
-### Por ejemplo:
-
-El programa funciona abriendo el archivo pasado como parámetro y leyendolo línea por línea. Por cada línea crea un registro e intenta agregarlo al vector. La función de lectura intenta leer todo el archivo o hasta encontrar el primer error. Devuelve un vector con todos los registros creados.
+Las ventajas de este T.D.A. salen a la luz en las operaciónes de buscar, insertar y modificar rápidamente datos. En general, puede variar con la implementación, las operaciones eficientes son `O(1)`.
 
 <div align="center">
-<img width="70%" src="img/diagrama1.svg">
-</div>
-
-En el archivo `sarasa.c` la función `funcion1` utiliza `realloc` para agrandar la zona de memoria utilizada para conquistar el mundo. El resultado de `realloc` lo guardo en una variable auxiliar para no perder el puntero original en caso de error:
-
-```c
-int *vector = realloc(vector_original, (n+1)*sizeof(int));
-
-if(vector == NULL)
-    return -1;
-vector_original = vector;
-```
-
-
-<div align="center">
-<img width="70%" src="img/diagrama2.svg">
+<img width="70%" src="img/diccionario.png">
 </div>
 
 ---
+##  ¿Que es una función de hash?
+Una función de hash, es una función matematica que toma un valor de entrada (como un string o un entero) y lo transforma, a partir de unas operaciones, en otro valor que generalmente es un número entero. Su propósito principal es acotar el dominio de los datos, de tamaño variable a datos de tamaño fijo de manera determinada.
 
-## Respuestas a las preguntas teóricas
-Incluír acá las respuestas a las preguntas del enunciado (si aplica).
+Una buena función de hash debe tener las siguientes propiedades:
+
+-Uniformidad: Debe distribuir los valores de entrada de manera uniforme para minimizar las colisiones.
+-Eficiencia: Debe calcularse de manera eficiente para no generar retrasos significativos en las operaciones que lo utilizan.
+-Determinismo: Para un mismo valor de entrada, siempre debe producir el mismo valor hash.
+-Resistencia a colisiones: Debe ser poco probable que dos valores distintos produzcan el mismo valor hash.
+
+<div align="center">
+<img width="70%" src="img/hash.png">
+</div>
+
+---
+##  ¿Que es una tabla de hash?
+Una tabla de hash, es una implementación del T.D.A. diccionario  en el cual se utiliza una función de hash para agrupar claves de manera eficiente dentro del diccionario.
+
+En una tabla de hash los datos se distribuyen en un vector. La función de hash toma la clave como entrada y calcula un índice correspondiente dentro del rango de las casillas disponibles. Luego, el valor asociado a la clave se almacena en esa posición de la tabla. Para esta implementación vamos a usar hash abiertos, que consiste en que los elementos no son insertados en la tabla de hash directamente. Los elementos están fuera de la tabla de hash. Por el otro lado, se lo conoce como direccionamiento cerrado ya que los elementos son insertados en la posición que devuelve la clave hasheada. Los pares (clave, valor) van a estar organizados con nodos enlazados. 
+
+<div align="center">
+<img width="70%" src="img/nodo.png">
+</div>
+
+Una de las ventajas principales de las tablas de hash es su alta velocidad de búsqueda y recuperación de datos. Dado que la función de hash permite obtener directamente la posición en la tabla donde se encuentra el valor deseado, el acceso a la información es muy rápido, en promedio, con un tiempo de búsqueda constante `O(1)`, Si la función de hash está bien implementada.
+
+Sin embargo, es importante destacar que en ciertos casos, puede ocurrir una colisión de hash. Esto sucede cuando dos claves diferentes generan el mismo índice de casilla. Para manejar estas colisiones, en la implementación que hice, simplemente se añade al final de los nodos enlazados. Para que la implementación no pierda eficacia, cuando la tabla de hash llega a una cantidad de elementos almacenados aplico la función `rehash()`. Esta función crear un hash nuevo con el doble de cantidad que el hash anterior y luego copia todos los elementos del viejo hash al nuevo. Para minimizar la cantidad de nodos que esten enlazados y mantener un tiempo de búsqueda constante `O(1)`.
+
+
